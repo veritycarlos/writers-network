@@ -3,7 +3,7 @@ import { UserContext } from './context/user'
 // import { useHistory } from 'react-router-dom'
 
 const Signup = () => {
-    const [name, setName] = useState("")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
     const [errorsList, setErrorsList] = useState([])
@@ -12,17 +12,42 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        fetch('/signup'), {
+            // config obj
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                // what we're sending to backend
+                username: username,     
+                password: password,
+                password_confirmation: passwordConfirmation
+
+            })
+        }
+        .then(res => res.json())
+        .then(user => {
+            if (!user.errors){
+                signup(user)
+                // history.push('/')
+            } else {
+                setUsername("")
+                setPassword("")
+                setPasswordConfirmation("")
+                const errorLis = user.errors.map(e => <li>{e}</li>)
+                setErrorsList(errorLis)
+            }            
+        })
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label>Name:</label>
+                <label>Username:</label>
                 <input 
                     type="text"
                     id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 /> <br/>
                 <label>Password:</label>
                 <input

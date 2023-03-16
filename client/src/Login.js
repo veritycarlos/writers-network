@@ -3,7 +3,7 @@ import { UserContext } from './context/user'
 // import { useHistory } from 'react-router-dom'
 
 const Login = () => {
-    const [name, setName] = useState("")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
     const [error, setError] = useState("")
@@ -12,17 +12,29 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                username: username,
+                password: password 
+            })
+        })
+        .then(res => res.json())
+        .then(user => {
+            login(user)
+        })
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label>Name:</label>
+                <label>Username:</label>
                 <input 
                     type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 /> <br/>
                 <label>Password:</label>
                 <input
