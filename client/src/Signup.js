@@ -8,7 +8,7 @@ const Signup = () => {
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
     const [errorsList, setErrorsList] = useState([])
     const {signup} = useContext(UserContext)
-    // const history = useHistory()
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -28,7 +28,7 @@ const Signup = () => {
         .then(user => {
             if (!user.errors){
                 signup(user)
-                // history.push('/')
+                navigate ('/')
             } else {
                 setUsername("")
                 setPassword("")
